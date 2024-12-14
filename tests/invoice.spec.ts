@@ -17,7 +17,7 @@ test.describe('Invoice Feature', () => {
     await page.waitForLoadState('networkidle');
   });
 
-  test('Should able to delete invoice in Draft Status created via existing client', async ({ page }) => {
+  test('Should able to create Invoice with Status : Draft', async ({ page }) => {
    //Click on New Invoice
     await navBarComponent.clickShortCut('New Invoice');
 
@@ -26,8 +26,12 @@ test.describe('Invoice Feature', () => {
     await clientPage.searchviaClientNumberandClick('QA-Automation1234');
 
     //Fill the Invoice details
-   await inovicePage.addIntroductoryText('This is a test invoice');
-   await page.pause();
+   await inovicePage.fillInvoiceDetails('Test Invoice - ', ' ', 'Description Automation - ', 'Invoice from the automation script ');
+  await inovicePage.addIntroductoryText('Introductory text from the automation script');
+   await inovicePage.addItemDetails('Item 1', 'Item Description 1', '1', '100');
+    await inovicePage.saveInvoice();
+    await inovicePage.verifySidebarState('Draft'); 
+    await page.pause();  // to delete code via API 
     
 });
 

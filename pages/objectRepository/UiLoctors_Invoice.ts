@@ -11,10 +11,10 @@ export const UiLocators = {
       dropdown_priceBase: '.sidebar-box-row select.ui-select__control', // Price Base dropdown
       dropdown_currencyPriceBase: '.sidebar-box-row .sidebar-box--currency select.ui-select__control', // Currency & Price Base
       chk_paymentMethods: '.sidebar-box ul.no-bullet li label.ui-checkbox input[type="checkbox"]', // Payment methods
-      txt_itemTitle: 'input[placeholder="Title"]', // Item title
+      txt_itemTitle: 'input[placeholder*="Tit"]', // Item titleconst inputField = page.locator('input[placeholder*="Tit"]'
       txt_itemDescription: '.position-description textarea', // Item description
-      txt_itemQuantity: '.position-quantity input[placeholder="0.0000"]', // Quantity input
-      txt_itemPrice: '.position-unitprice input[placeholder="Price"]', // Item Price
+      txt_itemQuantity: '#positionQuantity', // Quantity input
+      txt_itemPrice: '.position-unitprice input[placeholder="Price"], .position-unitprice input[placeholder="Preis"]', // Item Price
       btn_save: '#Document--Document-Actions--Save', // Save button
       btn_cancel: '#Document--Document-Actions--Cancel', // Cancel button
       btn_duplicateArticle: '#Position-_local_pv8m5ter1wrpphwij8niaztp-duplicate', // Duplicate button
@@ -22,5 +22,7 @@ export const UiLocators = {
       btn_deleteArticle: '#Position-_local_pv8m5ter1wrpphwij8niaztp-delete', // Delete Article button
       btn_addDiscount: '#Document--Add-Total-Reduction', // Add Discount button
       btn_addTotalReduction: '#Document--Totals--Add-Reduction', // Add Total Reduction button
+      sidebar_state: '.sidebar-box.state', // Sidebar state
+
     }
   };

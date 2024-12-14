@@ -1,4 +1,4 @@
-import { Locator, Page } from '@playwright/test';
+import { expect, Locator, Page } from '@playwright/test';
 import { UiLocators } from '@objects/UiLoctors_Invoice';
 
 class InvoicePage {
@@ -43,8 +43,8 @@ class InvoicePage {
     this.txt_itemDescription = page.locator(locators.txt_itemDescription);
     this.txt_itemQuantity = page.locator(locators.txt_itemQuantity);
     this.txt_itemPrice = page.locator(locators.txt_itemPrice);
-    this.btn_save = page.locator(locators.btn_save);
-    this.btn_cancel = page.locator(locators.btn_cancel);
+    this.btn_save = page.locator(locators.btn_save).first();
+    this.btn_cancel = page.locator(locators.btn_cancel).first();
     this.btn_duplicateArticle = page.locator(locators.btn_duplicateArticle);
     this.btn_createArticle = page.locator(locators.btn_createArticle);
     this.btn_deleteArticle = page.locator(locators.btn_deleteArticle);
@@ -116,6 +116,58 @@ class InvoicePage {
   async deleteArticle() {
     await this.btn_deleteArticle.click();
   }
+
+  //verify the sidebar state
+  async verifySidebarState(expectedStatus: string) {
+    const sidebarStateLocator = this.page.locator(UiLocators.invoicePage.sidebar_state);
+    const maxRetries = 20; // Maximum retries
+    const delay = 1000; // Delay between retries in milliseconds
+    let currentState: string | null = null;
+  
+    for (let i = 0; i < maxRetries; i++) {
+      // Get the current text content of the sidebar state
+      currentState = await sidebarStateLocator.textContent();
+  
+  // Trim and normalize the text
+  const trimmedState = currentState?.trim();
+
+  // Check if the current state contains the expected status
+  if (
+    (expectedStatus === 'Paid' || expectedStatus === 'Bezahlt') &&
+    /(Paid|Bezahlt)/.test(trimmedState!)
+  ) {
+    break;
+  }
+  if (
+    (expectedStatus === 'Draft' || expectedStatus === 'Entwurf') &&
+    /(Draft|Entwurf)/.test(trimmedState!)
+  ) {
+    break;
+  }
+  if (
+    (expectedStatus === 'Open' || expectedStatus === 'Offen') &&
+    /(Open|Offen)/.test(trimmedState!)
+  ) {
+    break;
+  }
+
+  // Wait before retrying
+  await this.page.waitForTimeout(delay);
+}
+
+// Final assertion after retries
+if (expectedStatus === 'Paid' || expectedStatus === 'Bezahlt') {
+  expect(currentState?.trim()).toMatch(/(Paid|Bezahlt)/);
+  expect(currentState?.trim()).not.toMatch(/(Draft|Entwurf)/);
+} else if (expectedStatus === 'Draft' || expectedStatus === 'Entwurf') {
+  expect(currentState?.trim()).toMatch(/(Draft|Entwurf)/);
+} else if (expectedStatus === 'Open' || expectedStatus === 'Offen') {
+  expect(currentState?.trim()).toMatch(/(Open|Offen)/);
+} else {
+  throw new Error(`Unsupported status: ${expectedStatus}`);
+}
+}
+
 }
 
 export default InvoicePage;
