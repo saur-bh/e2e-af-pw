@@ -8,6 +8,7 @@ class ClientPage {
   constructor(page: Page) {
     this.page = page;
     this.clientNumberInput = page.locator(UiLocators.clientPage.txtBox_clientNumber)
+
     this.tableData = page.locator(UiLocators.clientPage.table_clientData)
   }
 

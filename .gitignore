@@ -3,3 +3,4 @@ dist/
 test-results/
 notLoggedInState.json
 loggedInState.json
+html-report/
