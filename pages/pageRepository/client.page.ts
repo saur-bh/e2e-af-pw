@@ -1,5 +1,5 @@
 import { Locator, Page } from '@playwright/test';
-import { UiLocators } from '@objects/UiLocators';
+import { ClientPageDialog } from '@objects/UiLocators_Common';
 class ClientPage {
   private page: Page;
   clientNumberInput: Locator;
@@ -7,9 +7,9 @@ class ClientPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.clientNumberInput = page.locator(UiLocators.clientPage.txtBox_clientNumber)
+    this.clientNumberInput = page.locator(ClientPageDialog.txtBox_clientNumber)
 
-    this.tableData = page.locator(UiLocators.clientPage.table_clientData)
+    this.tableData = page.locator(ClientPageDialog.table_clientData)
   }
 
   async description(text: string) {

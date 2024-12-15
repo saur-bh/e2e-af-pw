@@ -1,6 +1,6 @@
 import { Page, Locator } from '@playwright/test';
-import { getLanguage } from '../../../utils/utils';
-class NavBarComponent {
+import { getLanguage ,clickSidebarOption } from '../../../utils/utils';
+class CommonComponent {
   private page: Page;
   shortcutBtn: Locator;
 
@@ -30,6 +30,11 @@ class NavBarComponent {
     const button = this.page.locator(`button:has-text("${buttonText}")`);
     await button.click();
   }
+
+  async clickSidebarOption(page: Page, option: string) {
+    await clickSidebarOption(this.page, option);
+  }
+
 }
 
-export default NavBarComponent;
+export default  CommonComponent ;

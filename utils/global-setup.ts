@@ -1,6 +1,6 @@
 import { chromium, FullConfig } from "@playwright/test";
 import { config } from 'dotenv';
-import { UiLocators } from '@objects/UiLocators';
+import {  LoginItems} from '@objects/UiLocators_Common';
 import { testConfig } from "./testConfig";
 
 // Load environment variables from .env file
@@ -27,9 +27,9 @@ async function globalSetup(config: FullConfig) {
   await page.context().storageState({ path: 'notLoggedInState.json' });
 
   // Perform login
-  await page.locator(UiLocators.loginPage.txtBox_email).fill(testConfig.username);
-  await page.locator(UiLocators.loginPage.txtBox_password).fill(testConfig.password);
-  await page.locator(UiLocators.loginPage.btn_login).click();
+  await page.locator(LoginItems.txtBox_email).fill(testConfig.username);
+  await page.locator(LoginItems.txtBox_password).fill(testConfig.password);
+  await page.locator(LoginItems.btn_login).click();
 
   // Save the logged-in state
   await page.context().storageState({ path: 'loggedInState.json' });
