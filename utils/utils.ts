@@ -6,16 +6,18 @@ export async function getLanguage(page: Page): Promise<string> {
 }
 
 export async function clickSidebarOption(page: Page, option: string) {
-  // Wait for the sidebar confirmation box
-  await page.waitForSelector(SidebarSelectors.sidebarBox, { state: 'visible' });
+ // Wait for the sidebar confirmation box
+ await page.waitForSelector(SidebarSelectors.sidebarBox, { state: 'visible' });
 
-  // Locate the button dynamically
-  const optionLocator = page.locator(SidebarSelectors.sidebarOption(option));
+ // Locate the button: handles text inside <span> or directly in <button>
+ const optionLocator = page.locator(
+   `//button[normalize-space(.)="${option}"] | //button[span[normalize-space(text())="${option}"]]`
+ );
 
-  // Ensure the button is visible before interacting
-  await optionLocator.waitFor({ state: 'visible' });
+ // Ensure the button is visible before interacting
+ await optionLocator.waitFor({ state: 'visible' });
 
-  // Perform the click action
-  await optionLocator.click();
-  console.log(`Clicked on sidebar option: "${option}"`);
+ // Perform the click action
+ await optionLocator.click();
+ console.log(`Clicked on sidebar option: "${option}"`);
 }

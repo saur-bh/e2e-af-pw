@@ -34,9 +34,10 @@ test.describe('Invoice Feature', () => {
     await inovicePage.verifySidebarState('Draft'); 
  // Confirm Sidebar and Delete the invoice
  await commonComponent.clickSidebarOption(page, 'Delete'); // English    
+
 });
 
-test.skip('Should able to  create invoice and ', async ({ page }) => {
+test('Should able to  create invoice and ', async ({ page }) => {
   //Click on New Invoice
    await commonComponent.clickShortCut('New Invoice');
 
@@ -50,7 +51,9 @@ test.skip('Should able to  create invoice and ', async ({ page }) => {
   await inovicePage.addItemDetails('Item 1', 'Item Description 1', '1', '100');
    await inovicePage.saveInvoice();
    await inovicePage.verifySidebarState('Draft'); 
+   await commonComponent.clickSidebarOption(page, 'Complete'); // English    
    await page.pause();  // to delete code via API 
+
    
 });
 
