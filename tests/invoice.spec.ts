@@ -40,8 +40,8 @@ test('Should able to create Invoice with Status : Open ', async ({ page }) => {
 
    //Fill the Invoice details
   await inovicePage.fillInvoiceDetails('Test Invoice - ', ' ', 'Description Automation - ', 'Invoice from the automation script ');
- await inovicePage.addIntroductoryText('Introductory text from the automation script');
-  await inovicePage.addItemDetails('Item 1', 'Item Description 1', '2', '200');
+ await inovicePage.addIntroductoryText('Introductory text Open');
+  await inovicePage.addItemDetails('Automation Service', 'item ', '2', '200');
    await inovicePage.saveInvoice();
    await inovicePage.verifySidebarState('Draft'); 
    await commonComponent.clickSidebarOption(page, 'Complete'); // English    
