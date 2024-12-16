@@ -21,23 +21,16 @@ test.describe('Invoice Feature', () => {
   test('Should able to create Invoice with Status : Draft', async ({ page }) => {
    //Click on New Invoice
     await commonComponent.clickShortCut('New Invoice');
-
     //Search for the Client and then click on the client
-
     await clientPage.searchviaClientNumberandClick('QA-Automation1234');
-
     //Fill the Invoice details
    await inovicePage.fillInvoiceDetails('Test Invoice - ', ' ', 'Description Automation - ', 'Invoice from the automation script ');
-  await inovicePage.addIntroductoryText('Introductory text from the automation script');
-   await inovicePage.addItemDetails('Item 1', 'Item Description 1', '1', '100');
     await inovicePage.saveInvoice();
-    await inovicePage.verifySidebarState('Draft'); 
- // Confirm Sidebar and Delete the invoice
+  await inovicePage.verifySidebarState('Draft'); 
  await commonComponent.clickSidebarOption(page, 'Delete'); // English    
-
 });
 
-test('Should able to  create invoice and ', async ({ page }) => {
+test('Should able to create Invoice with Status : Open ', async ({ page }) => {
   //Click on New Invoice
    await commonComponent.clickShortCut('New Invoice');
 
@@ -48,12 +41,11 @@ test('Should able to  create invoice and ', async ({ page }) => {
    //Fill the Invoice details
   await inovicePage.fillInvoiceDetails('Test Invoice - ', ' ', 'Description Automation - ', 'Invoice from the automation script ');
  await inovicePage.addIntroductoryText('Introductory text from the automation script');
-  await inovicePage.addItemDetails('Item 1', 'Item Description 1', '1', '100');
+  await inovicePage.addItemDetails('Item 1', 'Item Description 1', '2', '200');
    await inovicePage.saveInvoice();
    await inovicePage.verifySidebarState('Draft'); 
    await commonComponent.clickSidebarOption(page, 'Complete'); // English    
-   await page.pause();  // to delete code via API 
-
+  //  await inovicePage.verifySidebarState('Open');
    
 });
 

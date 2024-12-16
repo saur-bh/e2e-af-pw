@@ -1,23 +1,29 @@
 import { Page } from '@playwright/test';
-import { SidebarSelectors } from '@objects/UiLocators_Common';
 
 export async function getLanguage(page: Page): Promise<string> {
   return await page.evaluate(() => localStorage.getItem('i18nextLng') ||  'en-GB');  //de-DE
 }
 
 export async function clickSidebarOption(page: Page, option: string) {
- // Wait for the sidebar confirmation box
- await page.waitForSelector(SidebarSelectors.sidebarBox, { state: 'visible' });
+  // Scoped locator to the sidebar box
+  const optionLocator = page.locator(
+    `.sidebar-box.confirmation--box button:has-text("${option}")`
+  );
 
- // Locate the button: handles text inside <span> or directly in <button>
- const optionLocator = page.locator(
-   `//button[normalize-space(.)="${option}"] | //button[span[normalize-space(text())="${option}"]]`
- );
+  // Validate the number of matching elements
+  const buttonCount = await optionLocator.count();
+  if (buttonCount > 1) {
+    throw new Error(
+      `Strict mode violation: Found ${buttonCount} buttons for "${option}". Ensure the selector is unique.`
+    );
+  } else if (buttonCount === 0) {
+    throw new Error(`No button found for option "${option}".`);
+  }
 
- // Ensure the button is visible before interacting
- await optionLocator.waitFor({ state: 'visible' });
+  // Wait for the button to be visible
+  await optionLocator.waitFor({ state: 'visible' });
 
- // Perform the click action
- await optionLocator.click();
- console.log(`Clicked on sidebar option: "${option}"`);
+  // Click the button
+  await optionLocator.click();
+  console.log(`Clicked on sidebar option: "${option}"`);
 }
