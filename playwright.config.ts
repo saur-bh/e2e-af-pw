@@ -1,4 +1,4 @@
-import type { PlaywrightTestConfig } from '@playwright/test';
+import { devices, type PlaywrightTestConfig } from '@playwright/test';
 
 
 /**
@@ -34,7 +34,7 @@ const config: PlaywrightTestConfig = {
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: [
-    ['line'], 
+    ['line'],
     ['html', { outputFolder: 'html-report', open: 'never' }]
   ],
 
@@ -46,7 +46,7 @@ const config: PlaywrightTestConfig = {
     actionTimeout: 0,
     /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL: `https://${ENV}.${DOMAIN}.net/app/auth`,
-    
+
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'retain-on-failure',
@@ -68,17 +68,12 @@ const config: PlaywrightTestConfig = {
         video: `retain-on-failure`,
         trace: `retain-on-failure`,
         launchOptions: {
-          slowMo: 0
+          slowMo: 100
         }
       },
     },
 
-    // {
-    //   name: 'firefox',
-    //   use: {
-    //     ...devices['Desktop Firefox'],
-    //   },
-    // },
+
 
     // {
     //   name: 'webkit',

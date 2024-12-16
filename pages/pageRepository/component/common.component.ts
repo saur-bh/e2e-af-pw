@@ -1,5 +1,6 @@
 import { Page, Locator } from '@playwright/test';
-import { getLanguage ,clickSidebarOption ,handleDialogAction,waitForElementToDisappear} from '../../../utils/utils';
+import { getLanguage, clickSidebarOption, handleDialogAction, waitForElementToDisappear } from '../../../utils/utils';
+
 class CommonComponent {
   private page: Page;
   shortcutBtn: Locator;
@@ -35,13 +36,21 @@ class CommonComponent {
     await clickSidebarOption(this.page, option);
   }
 
-async handleDialogAction(action: 'Approve' | 'Cancel') {
+  async handleDialogAction(action: 'Approve' | 'Cancel') {
     await handleDialogAction(this.page, action);
   }
 
-  async waitForElementToDisappear(elementSelector: string, waitState: 'hidden' | 'detached' = 'detached', timeout: number = 100000) {
+  async waitForElementToDisappear(elementSelector: string, waitState: 'hidden' | 'detached' = 'detached', timeout: number = 200000) {
     await waitForElementToDisappear(this.page, elementSelector, waitState, timeout);
+  }
+
+  async toggleSwitch(page: Page, label: string, state: 'On' | 'Off') {
+    const switchLocator = page.locator(`label:has-text("${label}") input[type="checkbox"]`);
+    const isChecked = await switchLocator.isChecked();
+    if ((state === 'On' && !isChecked) || (state === 'Off' && isChecked)) {
+      await switchLocator.click();
+    }
   }
 }
 
-export default  CommonComponent ;
+export default CommonComponent;

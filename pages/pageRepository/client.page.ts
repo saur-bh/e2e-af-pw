@@ -18,7 +18,7 @@ class ClientPage {
 
   async searchviaClientNumberandClick(value: string) {
     const label =  this.page.locator('label', { hasText: /Client Number|Kunden-Nr/ });
-    const input =  label.locator('..').locator('input');
+    const input =  label.locator('..').locator('input[type="text"]');
     await input.type(value, { delay: 10 });
     console.log('I am executing afterward');
     await this.tableData.filter({ hasText: value }).first().locator('..').click();
