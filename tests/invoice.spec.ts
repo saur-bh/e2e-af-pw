@@ -45,8 +45,10 @@ test('Should able to create Invoice with Status : Open ', async ({ page }) => {
    await inovicePage.saveInvoice();
    await inovicePage.verifySidebarState('Draft'); 
    await commonComponent.clickSidebarOption(page, 'Complete'); // English    
-  //  await inovicePage.verifySidebarState('Open');
-   
+   await commonComponent.handleDialogAction('Approve');
+   await commonComponent.waitForElementToDisappear( '#Complete-Document');  //Complete Document button should disappear
+   await inovicePage.verifySidebarState('Open'); 
+
 });
 
 

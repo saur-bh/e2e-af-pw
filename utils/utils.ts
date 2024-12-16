@@ -27,3 +27,31 @@ export async function clickSidebarOption(page: Page, option: string) {
   await optionLocator.click();
   console.log(`Clicked on sidebar option: "${option}"`);
 }
+
+
+export async function handleDialogAction(page: Page, action: 'Approve' | 'Cancel') {
+  const dialogSelector = '.ui-dialog.ui-dialog--open';
+  
+  // Determine the button based on the action
+  const buttonSelector = `${dialogSelector} button:has-text("${action}")`;
+
+  // Locate the button
+  const buttonLocator = page.locator(buttonSelector);
+
+  // Ensure the button is visible
+  await buttonLocator.waitFor({ state: 'visible' });
+
+  // Click the button
+  await buttonLocator.click();
+  console.log(`Dialog action performed: "${action}"`);
+}
+
+export async function waitForElementToDisappear(page: Page, elementSelector: string, waitState: 'hidden' | 'detached' = 'detached', timeout: number = 30000) {
+  try {
+    // Wait for the element to disappear (hidden or detached)
+    await page.waitForSelector(elementSelector, { state: waitState, timeout });
+    console.log(`Element "${elementSelector}" is no longer ${waitState === 'hidden' ? 'visible' : 'present in the DOM'}.`);
+  } catch (error) {
+    throw new Error(`Element "${elementSelector}" did not disappear within ${timeout / 1000} seconds. Error: ${error.message}`);
+  }
+}

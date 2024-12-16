@@ -1,5 +1,5 @@
 import { Page, Locator } from '@playwright/test';
-import { getLanguage ,clickSidebarOption } from '../../../utils/utils';
+import { getLanguage ,clickSidebarOption ,handleDialogAction,waitForElementToDisappear} from '../../../utils/utils';
 class CommonComponent {
   private page: Page;
   shortcutBtn: Locator;
@@ -35,6 +35,13 @@ class CommonComponent {
     await clickSidebarOption(this.page, option);
   }
 
+async handleDialogAction(action: 'Approve' | 'Cancel') {
+    await handleDialogAction(this.page, action);
+  }
+
+  async waitForElementToDisappear(elementSelector: string, waitState: 'hidden' | 'detached' = 'detached', timeout: number = 100000) {
+    await waitForElementToDisappear(this.page, elementSelector, waitState, timeout);
+  }
 }
 
 export default  CommonComponent ;
