@@ -3,7 +3,16 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "npx playwright test --workers=1 --project=Chrome" ,
+    "test:all": "npx playwright test --workers=1 --project=Chrome,Firefox,WebKit",
+    "test:headless": "npx playwright test --workers=1 --project=ChromeHeadless",
+    "test:headless:all": "npx playwright test --workers=1 --project=ChromeHeadless,FirefoxHeadless,WebKitHeadless",
+    "test:report": "npx playwright test --workers=1 --project=Chrome --reporter=dot",
+    "test:report:all": "npx playwright test --workers=1 --project=Chrome,Firefox,WebKit --reporter=dot",
+    "test:report:headless": "npx playwright test --workers=1 --project=ChromeHeadless --reporter=dot",
+    "test:report:headless:all": "npx playwright test --workers=1 --project=ChromeHeadless,FirefoxHeadless,WebKitHeadless --reporter=dot"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",

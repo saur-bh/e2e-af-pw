@@ -1,124 +1,76 @@
 import { devices, type PlaywrightTestConfig } from '@playwright/test';
+import * as dotenv from 'dotenv';
 
-
-/**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
-// require('dotenv').config();
-
-/**
- * See https://playwright.dev/docs/test-configuration.
- */
+// Load the correct .env file based on ENV
 const ENV = process.env.ENV || 'stagqa';
+dotenv.config({ path: `.env.${ENV}` });
+
 const DOMAIN = (ENV === 'stagqa' || ENV === 'dresden') ? 'billodev' : 'billomat';
 
 const config: PlaywrightTestConfig = {
   testDir: './tests',
-  /* Maximum time one test can run for. */
-  timeout: 30 * 1000,
+  timeout: 60000, // Maximum time one test can run for
   expect: {
-    /**
-     * Maximum time expect() should wait for the condition to be met.
-     * For example in `await expect(locator).toHaveText();`
-     */
-    timeout: 5000
+    timeout: 60000, // Time for expect() conditions
   },
-  /* Run tests in files in parallel */
+
+  /* Parallel and Retry Settings */
   fullyParallel: true,
-  /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
-  /* Retry on CI only */
-  retries: process.env.CI ? 2 : 0,
-  /* Opt out of parallel tests on CI. */
+  retries: process.env.CI ? 2 : 1, // 2 retries on CI, 1 retry locally
   workers: process.env.CI ? 1 : undefined,
-  /* Reporter to use. See https://playwright.dev/docs/test-reporters */
+
+  /* Reporter Settings */
   reporter: [
     ['line'],
-    ['html', { outputFolder: 'html-report', open: 'never' }]
+    ['html', { outputFolder: 'html-report', open: process.env.CI ? 'never' : 'on-failure' }],
   ],
 
+  /* Global Setup */
   globalSetup: require.resolve('./utils/global-setup'),
 
-  /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
+  /* Use Settings */
   use: {
-    /* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
-    actionTimeout: 0,
-    /* Base URL to use in actions like `await page.goto('/')`. */
+    actionTimeout: 60000,
     baseURL: `https://${ENV}.${DOMAIN}.net/app/auth`,
-
-
-    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'retain-on-failure',
-
-    storageState: 'loggedInState.json'
+    storageState: 'loggedInState.json',
+    screenshot: 'only-on-failure',
+    video: 'retain-on-failure',
   },
 
-  /* Configure projects for major browsers */
+  /* Browser Projects */
   projects: [
     {
       name: 'Chrome',
       use: {
-        browserName: `chromium`,
-        channel: `chrome`,
+        browserName: 'chromium',
+        channel: 'chrome',
         headless: false,
         ignoreHTTPSErrors: true,
         acceptDownloads: true,
-        screenshot: `only-on-failure`,
-        video: `retain-on-failure`,
-        trace: `retain-on-failure`,
-        launchOptions: {
-          slowMo: 100
-        }
+        launchOptions: { slowMo: 100 },
       },
     },
-
-
-
-    // {
-    //   name: 'webkit',
-    //   use: {
-    //     ...devices['Desktop Safari'],
-    //   },
-    // },
-
-    /* Test against mobile viewports. */
-    // {
-    //   name: 'Mobile Chrome',
-    //   use: {
-    //     ...devices['Pixel 5'],
-    //   },
-    // },
-    // {
-    //   name: 'Mobile Safari',
-    //   use: {
-    //     ...devices['iPhone 12'],
-    //   },
-    // },
-
-    /* Test against branded browsers. */
-    // {
-    //   name: 'Microsoft Edge',
-    //   use: {
-    //     channel: 'msedge',
-    //   },
-    // },
-    // {
-    //   name: 'Google Chrome',
-    //   use: {
-    //     channel: 'chrome',
-    //   },
-    // },
+    {
+      name: 'Firefox',
+      use: {
+        browserName: 'firefox',
+        headless: false,
+      },
+    },
+    {
+      name: 'Webkit',
+      use: {
+        browserName: 'webkit',
+        headless: false,
+      },
+    },
   ],
 
-  /* Folder for test artifacts such as screenshots, videos, traces, etc. */
-  // outputDir: 'test-results/',
+  /* Test Artifacts */
+  outputDir: 'test-results/',
 
-  /* Run your local dev server before starting the tests */
-  // webServer: {
-  //   command: 'npm run start',
-  //   port: 3000,
-  // },
 };
 
 export default config;
